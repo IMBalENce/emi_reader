@@ -96,14 +96,10 @@ metadata.Acquire_Date = datestr(Acquire_Date, 'yyyy-mm-dd HH:MM:SS.FFF');
 mode = strfind(ObjectInfo, 'STEM');
 % Dwell_Time_Path
 if isempty(mode)==1
-    % metadata.Image_Mode = 'TEM mode';
-    % metadata.Camera_Name_Path
     metadata.Camera_Name = ObjectInfo(strfind(ObjectInfo, '<CameraNamePath>')+ length('<CameraNamePath>'):strfind(ObjectInfo, '</CameraNamePath>')-1);
     metadata.Integration_Time = ObjectInfo(strfind(ObjectInfo, '<DwellTimePath>')+ length('<DwellTimePath>'):strfind(ObjectInfo, '</DwellTimePath>')-1);
     metadata.Binning = ObjectInfo(strfind(ObjectInfo, '<Binning>')+ length('<Binning>'):strfind(ObjectInfo, '</Binning>')-1);
 else
-    % metadata.Image_Mode = 'STEM mode';
-    %metadata.Magnification = ObjectInfo(strfind(ObjectInfo,'<Magnification>')+ length('<Magnification>'):strfind(ObjectInfo,'</Magnification>')-1);
     metadata.Dwell_Time = ObjectInfo(strfind(ObjectInfo, '<DwellTimePath>')+ length('<DwellTimePath>'):strfind(ObjectInfo, '</DwellTimePath>')-1);
     metadata.Frame_Time = ObjectInfo(strfind(ObjectInfo, '<FrameTime>')+ length('<FrameTime>'):strfind(ObjectInfo, '</FrameTime>')-1);
 end

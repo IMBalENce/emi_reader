@@ -50,16 +50,10 @@ ObjectInfo = text(strfind(text, '<ObjectInfo>'):strfind(text, '</ObjectInfo>')+1
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % find associated .Ser file
 SerIndex1 = strfind(text, '<ObjectInfo>')-600;
-
 SerIndex2 = strfind(text, '<ObjectInfo>')-15;
-
 metadata.SerDir = cell(length(SerIndex1),1);
-
 for m = 1: length(SerIndex1)
     SerDirRaw = text(SerIndex1(m):SerIndex2(m));
-    
-    % metadata.SerDir{m,1} = SerDirRaw(strfind(SerDirRaw,'Real Space')+18:strfind(SerDirRaw,'.ser')+3);
-    
     SerFNameIndex = strfind(SerDirRaw,'\')+1;
     metadata.SerFName{m,1} = SerDirRaw(SerFNameIndex(1,length(SerFNameIndex)):strfind(SerDirRaw,'.ser')+3);
     metadata.SerDir{m,1} = [fPath metadata.SerFName{m,1}];
@@ -73,15 +67,12 @@ DetectorRangeY1 = str2num( ObjectInfo(strfind(ObjectInfo, '<StartY>')+ length('<
 DetectorRangeY2 = str2num( ObjectInfo(strfind(ObjectInfo, '<EndY>')+ length('<EndY>'):strfind(ObjectInfo, '</EndY>')-1) );
 metadata.Detector_Range = [DetectorRangeX1 DetectorRangeX2; DetectorRangeY1 DetectorRangeY2 ];
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Uuid
 metadata.Uuid = ObjectInfo(strfind(ObjectInfo, '<Uuid>')+ length('<Uuid>'):strfind(ObjectInfo, '</Uuid>')-1);
 % file directory
 metadata.File = [fPath fName];
-
-
 
 % Experimental Conditions/Microscope Conditions
 metadata.EXPERIMENTAL_CONDITIONS = ''; % title
@@ -91,23 +82,11 @@ metadata.Accelerating_Voltage = ObjectInfo(strfind(ObjectInfo, '<AcceleratingVol
 metadata.Tilt1 = ObjectInfo(strfind(ObjectInfo, '<Tilt1>')+ length('<Tilt1>'):strfind(ObjectInfo, '</Tilt1>')-1);
 metadata.Tilt2 = ObjectInfo(strfind(ObjectInfo, '<Tilt2>')+ length('<Tilt2>'):strfind(ObjectInfo, '</Tilt2>')-1);
 
-
-
-
-
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Acquire Info
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 metadata.ACQUISITION = ''; % title
-
-% imgTimeStr = datestr(imgTime, 'yyyy-mm-dd HH:MM:SS.FFF');
 metadata.Manufacturer = ObjectInfo(strfind(ObjectInfo, '<Manufacturer>')+ length('<Manufacturer>'):strfind(ObjectInfo, '</Manufacturer>')-1);
-
 
 % metadata.Acquire_Date = ObjectInfo(strfind(ObjectInfo, '<AcquireDate>')+ length('<AcquireDate>'):strfind(ObjectInfo, '</AcquireDate>')-1);
 Acquire_Date = ObjectInfo(strfind(ObjectInfo, '<AcquireDate>')+ length('<AcquireDate>'):strfind(ObjectInfo, '</AcquireDate>')-1);
@@ -130,24 +109,8 @@ else
 end
 
 % detector range
-% metadata.Detector_Pixel = [str2num(ObjectInfo(strfind(ObjectInfo, '<DetectorPixelHeight>')+ length('<DetectorPixelHeight>'):strfind(ObjectInfo, '</DetectorPixelHeight>')-1)) str2num(ObjectInfo(strfind(ObjectInfo, '<DetectorPixelWidth>')+ length('<DetectorPixelWidth>'):strfind(ObjectInfo, '</DetectorPixelWidth>')-1))];
-% DetectorRangeX1 = str2num( ObjectInfo(strfind(ObjectInfo, '<StartX>')+ length('<StartX>'):strfind(ObjectInfo, '</StartX>')-1) );
-% DetectorRangeX2 = str2num( ObjectInfo(strfind(ObjectInfo, '<EndX>')+ length('<EndX>'):strfind(ObjectInfo, '</EndX>')-1) );
-% DetectorRangeY1 = str2num( ObjectInfo(strfind(ObjectInfo, '<StartY>')+ length('<StartY>'):strfind(ObjectInfo, '</StartY>')-1) );
-% DetectorRangeY2 = str2num( ObjectInfo(strfind(ObjectInfo, '<EndY>')+ length('<EndY>'):strfind(ObjectInfo, '</EndY>')-1) );
 metadata.Detector_Range_X = [num2str(DetectorRangeX1) ' to ' num2str(DetectorRangeX2)];
 metadata.Detector_Range_Y = [num2str(DetectorRangeY1) ' to ' num2str(DetectorRangeY2)];
-% value = fieldnames(structure name);
-
-
-
-
-
-
-
-
-
-
 
 % ExperiementalDescription
 metadata.MICROSCOPE_INFO = ''; % title
@@ -173,33 +136,6 @@ for i = 1: length(DataIndex1)
     metadata.(Field{i,1}) = ValueUnit{i,1};
     
 end
-
-
-
-% % Acquire Info
-% % metadata.Acquire_Date = ObjectInfo(strfind(ObjectInfo, '<AcquireDate>')+ length('<AcquireDate>'):strfind(ObjectInfo, '</AcquireDate>')-1);
-% Acquire_Date = ObjectInfo(strfind(ObjectInfo, '<AcquireDate>')+ length('<AcquireDate>'):strfind(ObjectInfo, '</AcquireDate>')-1);
-% Acquire_Date = datetime(Acquire_Date,'InputFormat','eee MMM dd HH:mm:ss yyyy'); % 'Tue Apr 05 14:20:17 2016'
-% metadata.Acquire_Date = datestr(Acquire_Date, 'yyyy-mm-dd HH:MM:SS.FFF');
-% % imgTimeStr = datestr(imgTime, 'yyyy-mm-dd HH:MM:SS.FFF');
-% metadata.Manufacturer = ObjectInfo(strfind(ObjectInfo, '<Manufacturer>')+ length('<Manufacturer>'):strfind(ObjectInfo, '</Manufacturer>')-1);
-% 
-% 
-% %metadata.Magnification = ObjectInfo(strfind(ObjectInfo,'<Magnification>')+ length('<Magnification>'):strfind(ObjectInfo,'</Magnification>')-1);
-% metadata.Dwell_Time_Path = ObjectInfo(strfind(ObjectInfo, '<DwellTimePath>')+ length('<DwellTimePath>'):strfind(ObjectInfo, '</DwellTimePath>')-1);
-% metadata.Frame_Time = ObjectInfo(strfind(ObjectInfo, '<FrameTime>')+ length('<FrameTime>'):strfind(ObjectInfo, '</FrameTime>')-1);
-% metadata.Camera_Name_Path = ObjectInfo(strfind(ObjectInfo, '<CameraNamePath>')+ length('<CameraNamePath>'):strfind(ObjectInfo, '</CameraNamePath>')-1);
-% metadata.Binning = ObjectInfo(strfind(ObjectInfo, '<Binning>')+ length('<Binning>'):strfind(ObjectInfo, '</Binning>')-1);
-% 
-% metadata.Detector_Pixel = [str2num(ObjectInfo(strfind(ObjectInfo, '<DetectorPixelHeight>')+ length('<DetectorPixelHeight>'):strfind(ObjectInfo, '</DetectorPixelHeight>')-1)) str2num(ObjectInfo(strfind(ObjectInfo, '<DetectorPixelWidth>')+ length('<DetectorPixelWidth>'):strfind(ObjectInfo, '</DetectorPixelWidth>')-1))];
-% DetectorRangeX1 = str2num( ObjectInfo(strfind(ObjectInfo, '<StartX>')+ length('<StartX>'):strfind(ObjectInfo, '</StartX>')-1) );
-% DetectorRangeX2 = str2num( ObjectInfo(strfind(ObjectInfo, '<EndX>')+ length('<EndX>'):strfind(ObjectInfo, '</EndX>')-1) );
-% DetectorRangeY1 = str2num( ObjectInfo(strfind(ObjectInfo, '<StartY>')+ length('<StartY>'):strfind(ObjectInfo, '</StartY>')-1) );
-% DetectorRangeY2 = str2num( ObjectInfo(strfind(ObjectInfo, '<EndY>')+ length('<EndY>'):strfind(ObjectInfo, '</EndY>')-1) );
-% metadata.Detector_Range = [DetectorRangeX1 DetectorRangeX2; DetectorRangeY1 DetectorRangeY2];
-
-% value = fieldnames(structure name);
-
 
 
 end
